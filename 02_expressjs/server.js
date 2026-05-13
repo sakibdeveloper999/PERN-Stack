@@ -59,19 +59,48 @@ router.post('/', (req, res)=>{
     };
 
     cars.push(newCar);
-    
+
     res.status(201).json(newCar);
     
 });
 
 // update an existing car
 router.put('/:id', (req, res)=>{
-    res.send('Here you can update an existing car..!');
+    const carId = Number(req.params.id);
+    const carIndex = cars.findIndex((car)=> car.id === carId);
+    if(carIndex === -1){
+        return res.status(404).send('Car not found..!');
+    }
+    const {make, model, year, color, price} = req.body;
+
+    if(!make || !model || !year || !color || !price){
+        return res.status(400).send('All fields are required..!');
+    }
+    const updatedCar = {
+        id: carId, 
+        make,
+        model,
+        year: Number(year),
+        color,
+        price: Number(price)
+    };
+    cars[carIndex] = updatedCar;
+
+    res.json(updatedCar);
+    
 });
 
 // delete an existing car
 router.delete('/:id', (req, res)=>{
-    res.send('Here you can delete an existing car..!');
+    const carId = Number(req.params.id);
+    const carIndex = cars.findIndex((car)=> car.id === carId);
+
+    if(carIndex === -1){
+        return res.status(404).send('Car not found..!');
+    }
+
+    cars.splice(carIndex, 1);
+    res.send('Car deleted successfully..!');
 });
 
 

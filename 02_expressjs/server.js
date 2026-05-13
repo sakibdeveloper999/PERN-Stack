@@ -1,11 +1,17 @@
 import express from 'express';
 
+// Create an Express application
 const app = express();
 const PORT = 3000;
 const router = express.Router();
-
 app.use(express.json());
-
+// Middleware to log request details
+app.use((req, res, next) => {
+    const timestamp = new Date().toISOString();
+    console.log(`[${timestamp}] ${req.method} ${req.url}`);
+    next();
+})
+// In-memory data store for cars
 let cars = [
     {id: 1, make: 'Toyota', model: 'Camry', year: 2020, color: 'Red', price: 25000},
     {id: 2, make: 'Honda', model: 'Civic', year: 2021, color: 'Blue', price: 22000},

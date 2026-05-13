@@ -43,9 +43,23 @@ router.get('/:id', (req, res)=>{
 
 // create a new car
 router.post('/', (req, res)=>{
-    const newCar = req.body;
-    newCar.id = cars.length + 1; // assign a new id to the car
+    const {make, model, year, color, price} = req.body;
+
+    if(!make || !model || !year || !color || !price){
+        return res.status(400).send('All fields are required..!');
+    }
+
+    const newCar = {
+        id: cars.length + 1, 
+        make, 
+        model, 
+        year : Number(year),
+        color, 
+        price: Number(price)
+    };
+
     cars.push(newCar);
+    
     res.status(201).json(newCar);
     
 });

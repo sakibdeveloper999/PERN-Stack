@@ -59,9 +59,9 @@ router.post('/', (req, res)=>{
         id: cars.length + 1, 
         make, 
         model, 
-        year : Number(year),
+        year : parseInt(year),
         color, 
-        price: Number(price)
+        price: parseFloat(price)
     };
 
     cars.push(newCar);
@@ -86,9 +86,9 @@ router.put('/:id', (req, res)=>{
         id: carId, 
         make,
         model,
-        year: Number(year),
+        year: parseInt(year),
         color,
-        price: Number(price)
+        price: parseFloat(price)
     };
     cars[carIndex] = updatedCar;
 

@@ -1,4 +1,6 @@
 import express from 'express';
+import { db } from './db.js';
+import { cars } from './schema.js';
 
 // Create an Express application
 const app = express();
@@ -12,13 +14,7 @@ app.use((req, res, next) => {
     next();
 })
 // In-memory data store for cars
-let cars = [
-    {id: 1, make: 'Toyota', model: 'Camry', year: 2020, color: 'Red', price: 25000},
-    {id: 2, make: 'Honda', model: 'Civic', year: 2021, color: 'Blue', price: 22000},
-    {id: 3, make: 'Ford', model: 'Mustang', year: 2019, color: 'Black', price: 30000},
-    {id: 4, make: 'Chevrolet', model: 'Impala', year: 2018, color: 'White', price: 20000},
-    {id: 5, make: 'Tesla', model: 'Model 3', year: 2022, color: 'Silver', price: 35000}
-];  
+  
 
 // view all cars
 app.get('/', (req, res)=>{
@@ -48,23 +44,21 @@ router.get('/:id', (req, res)=>{
 
 
 // create a new car
-router.post('/', (req, res)=>{
+router.post('/', async (req, res)=>{
     const {make, model, year, color, price} = req.body;
 
     if(!make || !model || !year || !color || !price){
         return res.status(400).send('All fields are required..!');
     }
 
-    const newCar = {
-        id: cars.length + 1, 
-        make, 
-        model, 
-        year : parseInt(year),
-        color, 
-        price: parseFloat(price)
-    };
+    const [newCar] = await db.insert(cars).values({
+        make,
+        model,
+        year,
+        color,
+        price
+    }).returning();
 
-    cars.push(newCar);
 
     res.status(201).json(newCar);
     

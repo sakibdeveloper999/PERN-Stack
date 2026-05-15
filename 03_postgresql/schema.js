@@ -6,6 +6,8 @@ import {
   varchar,
   timestamp,
 } from "drizzle-orm/pg-core";
+import { db } from './db.js';
+import { drizzle } from 'drizzle-orm/neon-http';
 
 export const cars = pgTable("cars", {
   id: serial("id").primaryKey(),

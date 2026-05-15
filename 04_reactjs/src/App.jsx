@@ -12,15 +12,16 @@ const App = () => {
       .then(response => response.json())
       .then(data => setCars(data))
       .catch(error => console.error('Error fetching cars:', error));
-      console.log(cars);
-  }, [])
+    }, [])
   
+    
   return (
     <div>
       <h1>Welcome to the Car Store</h1>
       <ul>
-        <Car/>
-        <Car/>
+        {cars.map( car => (
+          <Car key={car.id} {...car} />
+        ) )}
       </ul>
     </div>
   )

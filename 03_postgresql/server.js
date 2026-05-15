@@ -17,14 +17,15 @@ app.use((req, res, next) => {
   
 
 // view all cars
-app.get('/', (req, res)=>{
+app.get('', (req, res)=>{
     res.send('Hello from the Car API..!');
 });
 // use the router for all routes starting with /api/v1/cars
 app.use('/api/v1/cars', router);
 
-router.get('/', (req, res)=>{
-    res.json(cars);
+router.get('/', async (req, res)=>{
+    allCar = await db.select().from(cars);
+    res.json(allCar);
 });
 
 // ====== CRUD operations for cars =======
